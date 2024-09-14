@@ -60,10 +60,9 @@ public class getSimHash {
             //计算关键词的128位向量值之和
             for (int j = 0; j < v.length; j++) {
                 if (keywordHash.charAt(j) == '1') {
-                    //v[j] += (10 - (i / (size / 10)));
+
                     v[j] += word.getTfidfvalue()*10000;
                 } else {
-                    // v[j] -= (10 - (i / (size / 10)));
                     v[j] -= word.getTfidfvalue()*10000;
                 }
             }
