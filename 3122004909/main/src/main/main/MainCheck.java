@@ -1,6 +1,7 @@
 package main.main;
 
 import main.others.Files;
+import main.others.getSimHash;
 
 import java.io.*;
 
@@ -14,6 +15,8 @@ public class MainCheck {
         String str0=args[0];
         String str1=args[1];
         String resultFileName=args[2];
+        String simHash0 = getSimHash.simHash(Files.read(str0));
+        String simHash1 = getSimHash.simHash(Files.read(str1));
 
     }
 
