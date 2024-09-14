@@ -14,6 +14,7 @@ public class getSimHash {
     计算局部敏感哈希值
     */
     public static String getHash(String str){
+
         try{
             // 使用 MD5 获得 hash 值
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
