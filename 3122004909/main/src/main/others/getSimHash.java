@@ -38,29 +38,35 @@ public class getSimHash {
 
         JiebaSegmenter segmenter = new JiebaSegmenter();
         List<SegToken> tokens = segmenter.process(str, JiebaSegmenter.SegMode.SEARCH);
+        int topN=tokens.size()/4*3;
+        //分词并计算关键词权重
+        TFIDFAnalyzer tfidfAnalyzer=new TFIDFAnalyzer();
+        List<Keyword> list=tfidfAnalyzer.analyze(str,topN);
 
-        int i = 0;
-        int size = tokens.size();
 
-        for (SegToken keyword : tokens) {
-            //2. 获取hash值
-            String keywordHash = getHash(keyword.word);
+        for(Keyword word:list){
+            //System.out.println(word.getName()+":"+word.getTfidfvalue()+",");
+            //得到每个关键词的哈希值
+            String keywordHash = getHash(word.getName());
+
             if (keywordHash.length() < 128) {
 
                 int dif = 128 - keywordHash.length();
+                //如果哈希值不足128位，则补足低位0
                 for (int j = 0; j < dif; j++) {
-                    keywordHash += "0";         //如果哈希值不足128位，则补足低位0
+                    keywordHash += "0";
                 }
             }
-
+            //计算关键词的128位向量值之和
             for (int j = 0; j < v.length; j++) {
                 if (keywordHash.charAt(j) == '1') {
-                    v[j] += (10 - (i / (size / 10)));
+                    //v[j] += (10 - (i / (size / 10)));
+                    v[j] += word.getTfidfvalue()*10000;
                 } else {
-                    v[j] -= (10 - (i / (size / 10)));
+                    // v[j] -= (10 - (i / (size / 10)));
+                    v[j] -= word.getTfidfvalue()*10000;
                 }
             }
-            i++;
         }
         //将总的哈希值降维，向量变 0 或 1，返回 simHash 值
         String simHash = "";
