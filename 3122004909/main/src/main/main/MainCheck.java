@@ -1,6 +1,7 @@
 package main.main;
 
 import main.others.Files;
+import main.others.getDistance;
 import main.others.getSimHash;
 
 import java.io.*;
@@ -17,7 +18,13 @@ public class MainCheck {
         String resultFileName=args[2];
         String simHash0 = getSimHash.simHash(Files.read(str0));
         String simHash1 = getSimHash.simHash(Files.read(str1));
-
+        if (simHash1==null||simHash0==null) {
+            System.out.println("simHash Error,有一文本为空");
+        }else {
+            // 由 simHash 值求出相似度
+            double similarity = getDistance.getSimilarity(simHash0, simHash1);
+            Files.write(similarity, resultFileName);
+            System.out.println("相似度为"+String.format("%.2f",similarity));
     }
 
 
